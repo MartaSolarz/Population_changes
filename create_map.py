@@ -51,8 +51,12 @@ def create_population_map(year: int, data: pd.DataFrame, selected_countries_geoj
             'weight': 0.5,
             'fillOpacity': 0,
         },
-        tooltip=folium.features.GeoJsonTooltip(fields=['Name', year_str], aliases=['Country', f'Population {year_str}'],
-                                               labels=True, sticky=True),
+        tooltip=folium.features.GeoJsonTooltip(
+            fields=['Name', year_str],
+            aliases=['Country', f'Population {year_str}'],
+            labels=True,
+            sticky=True
+        ),
         highlight_function=lambda x: {'weight': 3, 'fillOpacity': 0},
         name='Population Labels',
     ).add_to(my_map)

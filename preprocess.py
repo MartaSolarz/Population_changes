@@ -44,13 +44,13 @@ def preprocess_data(data: pd.DataFrame, selected_countries: list[str]) -> pd.Dat
     return df
 
 
-def update_properties_in_geojson(world_geojson: json, data: pd.DataFrame, selected_countries: list[str]) -> json:
+def update_properties_in_geojson(world_geojson: json, data: pd.DataFrame, selected_countries_codes: list[str]) -> json:
     """
         Updates properties in a GeoJSON file based on provided country data.
 
         Parameters:
         - world_geojson (json): Input GeoJSON containing world features.
-        - data (pd.DataFrame): DataFrame containing country data.
+        - data (pd.DataFrame): DataFrame containing population data.
         - selected_countries (list[str]): List of selected country codes.
 
         Returns:
@@ -64,20 +64,20 @@ def update_properties_in_geojson(world_geojson: json, data: pd.DataFrame, select
     for feature in world_geojson['features']:
         iso_a3 = feature['properties']['ISO_A3']
 
-        if iso_a3 not in selected_countries:
+        if iso_a3 not in selected_countries_codes:
             continue
 
         row = data[(data['Code'] == iso_a3)]
-        if not row.empty:
-            name = row.iloc[0]['Name']
+        if row.empty:
+            continue
 
-            for year in range(1960, 2051):
-                year_str = str(year)
-                population_year = row.iloc[0][year_str]
-                feature['properties'][year_str] = population_year
+        for year in range(1960, 2051):
+            year_str = str(year)
+            population_year = row.iloc[0][year_str]
+            feature['properties'][year_str] = population_year
 
-            feature['properties']['Name'] = name
-
-            filtered_geojson['features'].append(feature)
+        name = row.iloc[0]['Name']
+        feature['properties']['Name'] = name
+        filtered_geojson['features'].append(feature)
 
     return filtered_geojson

@@ -29,6 +29,9 @@ By implementing these key components, the project aims to provide users with an 
 
 ## 2. How to run the project?
 
+```bash
+pip install -r requirements.txt
+```
 #### Using bash:
 
 ```bash
