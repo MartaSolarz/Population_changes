@@ -64,6 +64,3 @@ def create_population_map(year: int, data: pd.DataFrame, selected_countries_geoj
     folium.LayerControl().add_to(my_map)
 
     return my_map
-
-def test():
-    print("test")
